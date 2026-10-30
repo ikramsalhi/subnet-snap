@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f2">
+  <meta name="description" content="SubnetSnap is a free, private, beginner-friendly IPv4 subnet calculator. Find CIDR, masks, ranges, and usable hosts without signing up.">
+  <title>SubnetSnap — IPv4 subnetting made simple</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="calculator.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="masthead" aria-label="Site header">
+      <a class="brand" href="./" aria-label="SubnetSnap home"><span class="brand-icon" aria-hidden="true">S<span>/</span></span><span>subnet<span class="brand-bold">snap</span></span></a>
+      <span class="top-note"><span class="online-dot" aria-hidden="true"></span> FREE TOOL · NO ACCOUNT</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-heading">
+        <div>
+          <p class="eyebrow">A SMALL TOOL FOR A BIG TOPIC <span class="rule" aria-hidden="true"></span> 001 / NETWORKING</p>
+          <h1 id="page-heading">IPv4 subnetting.<br><em>Finally, simple.</em></h1>
+          <p class="intro-copy">Enter an IP address and prefix. Get the network address, host range, subnet mask, and everything else in one clear view.</p>
+        </div>
+        <div class="intro-stamp" aria-hidden="true"><span>32</span><small>BITS<br>ONE CLEAR ANSWER</small></div>
+      </section>
+
+      <section class="workbench" aria-labelledby="calculator-heading">
+        <div class="section-heading"><div><p class="micro-label">01 / INPUT</p><h2 id="calculator-heading">Calculate a subnet</h2></div><span class="chip">IPv4</span></div>
+        <form id="subnet-form" novalidate>
+          <div class="input-grid">
+            <div class="form-field"><label for="ip-address">IP address</label><input id="ip-address" name="ip-address" type="text" inputmode="decimal" value="192.168.10.42" placeholder="e.g. 192.168.1.10" autocomplete="off" spellcheck="false" aria-describedby="ip-help" required><p class="field-hint" id="ip-help">Four numbers separated by dots</p></div>
+            <div class="form-field prefix-field"><label for="prefix">CIDR prefix</label><div class="prefix-wrap"><span aria-hidden="true">/</span><input id="prefix" name="prefix" type="number" min="0" max="32" step="1" value="24" required></div><p class="field-hint">Whole number from 0 to 32</p></div>
+            <button class="calculate-button" type="submit">Calculate <span aria-hidden="true">↗</span></button>
+          </div>
+          <div class="slider-line"><label for="prefix-range">Adjust prefix <strong id="range-label">/24</strong></label><input type="range" id="prefix-range" min="0" max="32" value="24" aria-label="Adjust CIDR prefix"><span class="slider-endpoints"><span>/0</span><span>/32</span></span></div>
+          <div class="samples"><span class="sample-label">TRY AN EXAMPLE</span><button type="button" data-example="192.168.1.100/24">Home /24</button><button type="button" data-example="10.0.0.75/27">Office /27</button><button type="button" data-example="172.16.0.2/31">Point-to-point /31</button></div>
+          <p id="error-message" class="error-message" role="alert" hidden></p>
+        </form>
+      </section>
+
+      <section class="results" aria-labelledby="results-heading" id="results-section">
+        <div class="results-top"><div><p class="micro-label">02 / RESULTS</p><h2 id="results-heading">Your network, explained</h2></div><button id="copy-results" class="copy-button" type="button"><span aria-hidden="true">⧉</span> Copy summary</button></div>
+        <div class="answer-feature"><div><p class="answer-label">NETWORK / CIDR</p><output id="result-cidr" class="cidr-display">192.168.10.0/24</output><p class="answer-context">The address that identifies your subnet</p></div><div class="answer-badge"><span aria-hidden="true">✓</span> CALCULATED</div></div>
+        <div class="results-grid">
+          <div class="result-tile"><p>Subnet mask</p><output id="result-mask">255.255.255.0</output></div>
+          <div class="result-tile"><p>Wildcard mask</p><output id="result-wildcard">0.0.0.255</output></div>
+          <div class="result-tile"><p>Broadcast address</p><output id="result-broadcast">192.168.10.255</output></div>
+          <div class="result-tile"><p>First usable address</p><output id="result-first">192.168.10.1</output></div>
+          <div class="result-tile"><p>Last usable address</p><output id="result-last">192.168.10.254</output></div>
+          <div class="result-tile result-tile-feature"><p>Usable host addresses</p><output id="result-hosts">254</output><span id="result-total" class="total-hint">256 total addresses</span></div>
+        </div>
+        <p class="address-note" id="result-note">For conventional IPv4 subnets, the network and broadcast addresses are not assigned to hosts.</p>
+      </section>
+
+      <section class="explainer" aria-labelledby="explainer-heading">
+        <div class="explainer-header"><div><p class="micro-label">03 / UNDERSTAND IT</p><h2 id="explainer-heading">What do the bits mean?</h2></div><div class="legend"><span><i class="legend-net"></i> Network</span><span><i class="legend-host"></i> Host</span></div></div>
+        <div id="bit-strip" class="bit-strip" role="img" aria-label="IPv4 address bits, with network and host portions highlighted"></div>
+        <div class="bit-descriptions"><p><strong id="network-bits">24 network bits</strong><span>Identify the subnet</span></p><p><strong id="host-bits">8 host bits</strong><span>Identify an address inside it</span></p></div>
+        <div class="classification"><span class="class-icon" aria-hidden="true">i</span><p><strong id="ip-classification">Private IPv4</strong><span id="classification-description">In an RFC 1918 private address range.</span></p></div>
+      </section>
+
+      <section class="learn-more"><div class="learn-mark" aria-hidden="true">?</div><div><h2>New to subnetting?</h2><p><strong>/24</strong> means the first 24 of 32 bits identify the network. The remaining 8 bits leave 256 possible addresses. In a conventional /24 subnet, 254 can be assigned to hosts.</p></div></section>
+    </main>
+
+    <footer><span>© <span id="year">2026</span> SubnetSnap · Open source under MIT</span><span>Private by design. All calculations happen in your browser.</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
